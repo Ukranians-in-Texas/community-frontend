@@ -54,8 +54,7 @@ function validate(data) {
     else if (data.descriptionEn.length > 600) e.descriptionEn = "descriptionTooLong";
     if (!data.descriptionUa.trim()) e.descriptionUa = "descriptionUaRequired";
     else if (data.descriptionUa.length > 600) e.descriptionUa = "descriptionTooLong";
-    if (!data.phone.trim()) e.phone = "phoneRequired";
-    else if (!/^[\d\s+\-()]+$/.test(data.phone.trim()))
+    if (data.phone.trim() && !/^[\d\s+\-()]+$/.test(data.phone.trim()))
         e.phone = "phoneInvalid";
     if (!data.email.trim()) e.email = "emailRequired";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim()))
@@ -682,7 +681,6 @@ export function AddServiceForm() {
             {/* Phone */}
             <FormField
                 label={t("addService.fields.phone")}
-                required
                 htmlFor="phone"
                 error={
                     touched.phone && errors.phone
