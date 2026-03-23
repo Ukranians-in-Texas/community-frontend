@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   }
 
   // Required fields
-  if (!category || !businessName?.trim() || !descriptionEn?.trim() || !descriptionUa?.trim() || !phone?.trim() || !email?.trim()) {
+  if (!category || !businessName?.trim() || !descriptionEn?.trim() || !descriptionUa?.trim() || !email?.trim()) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     return res.status(400).json({ error: 'Invalid email' });
   }
-  if (!/^[\d\s+\-()]+$/.test(phone.trim())) {
+  if (phone?.trim() && !/^[\d\s+\-()]+$/.test(phone.trim())) {
     return res.status(400).json({ error: 'Invalid phone' });
   }
   if (website?.trim() && !/^https?:\/\//i.test(website.trim())) {
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
   if (businessName.trim().length > 100) return res.status(400).json({ error: 'Business name too long' });
   if (descriptionEn.trim().length > 600) return res.status(400).json({ error: 'Description too long' });
   if (descriptionUa.trim().length > 600) return res.status(400).json({ error: 'Description too long' });
-  if (phone.trim().length > 30) return res.status(400).json({ error: 'Phone too long' });
+  if (phone?.trim() && phone.trim().length > 30) return res.status(400).json({ error: 'Phone too long' });
   if (email.trim().length > 200) return res.status(400).json({ error: 'Email too long' });
   if (address?.trim().length > 200) return res.status(400).json({ error: 'Address too long' });
   if (website?.trim().length > 300) return res.status(400).json({ error: 'Website URL too long' });

@@ -81,7 +81,6 @@ describe('required fields', () => {
     ['businessName', { businessName: '   ' }],
     ['descriptionEn', { descriptionEn: '' }],
     ['descriptionUa', { descriptionUa: '' }],
-    ['phone', { phone: '' }],
     ['email', { email: '' }],
   ])('returns 400 when %s is missing', async (_field, override) => {
     const res = makeRes();
