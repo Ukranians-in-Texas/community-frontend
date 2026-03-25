@@ -4,7 +4,16 @@ import { supabase } from '../../lib/supabaseClient';
 
 export function AdminLayout() {
   const [loading, setLoading] = useState(true);
+  const [pendingCount, setPendingCount] = useState(0);
   const navigate = useNavigate();
+
+  const fetchPendingCount = async () => {
+    const { count } = await supabase
+      .from('services')
+      .select('*', { count: 'exact', head: true })
+      .eq('approved', false);
+    if (count != null) setPendingCount(count);
+  };
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -13,6 +22,7 @@ export function AdminLayout() {
         return;
       }
       setLoading(false);
+      fetchPendingCount();
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -47,7 +57,14 @@ export function AdminLayout() {
         <div className="flex items-center gap-4">
           <span className="font-bold text-dark-blue text-sm">Spilno Admin</span>
           <nav className="flex gap-1">
-            <NavLink to="/admin" end className={navClass}>Queue</NavLink>
+            <NavLink to="/admin" end className={navClass}>
+              Queue
+              {pendingCount > 0 && (
+                <span className="ml-1.5 bg-brand-red text-white text-xs font-bold px-1.5 py-0.5 rounded-full leading-none">
+                  {pendingCount}
+                </span>
+              )}
+            </NavLink>
             <NavLink to="/admin/services" className={navClass}>Services</NavLink>
           </nav>
         </div>
